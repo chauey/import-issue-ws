@@ -1,6 +1,126 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "import-test-app": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/import-test-app",
+      "sourceRoot": "apps/import-test-app/src",
+      "prefix": "import-issue-ws",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/import-test-app",
+            "index": "apps/import-test-app/src/index.html",
+            "main": "apps/import-test-app/src/main.ts",
+            "polyfills": "apps/import-test-app/src/polyfills.ts",
+            "tsConfig": "apps/import-test-app/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "apps/import-test-app/src/favicon.ico",
+              "apps/import-test-app/src/assets"
+            ],
+            "styles": ["apps/import-test-app/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/import-test-app/src/environments/environment.ts",
+                  "with": "apps/import-test-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "import-test-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "import-test-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "import-test-app:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/import-test-app/tsconfig.app.json",
+              "apps/import-test-app/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/import-test-app/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/import-test-app/jest.config.js",
+            "tsConfig": "apps/import-test-app/tsconfig.spec.json",
+            "setupFile": "apps/import-test-app/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "import-test-app-e2e": {
+      "root": "apps/import-test-app-e2e",
+      "sourceRoot": "apps/import-test-app-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/import-test-app-e2e/cypress.json",
+            "tsConfig": "apps/import-test-app-e2e/tsconfig.e2e.json",
+            "devServerTarget": "import-test-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "import-test-app:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/import-test-app-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/import-test-app-e2e/**"]
+          }
+        }
+      }
+    }
+  },
   "cli": {
     "defaultCollection": "@nrwl/angular"
   },
@@ -12,5 +132,6 @@
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
     }
-  }
+  },
+  "defaultProject": "import-test-app"
 }
